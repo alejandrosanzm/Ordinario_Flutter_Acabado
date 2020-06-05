@@ -5,8 +5,9 @@ import 'package:flutter/material.dart';
 
 class PredictionListState extends State<PredictionsList> {
   String _key = "766273";
+  String _title = "Predicción";
 
-  PredictionListState(this._key);
+  PredictionListState(this._key, this._title);
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +21,7 @@ class PredictionListState extends State<PredictionsList> {
 
   Widget myAppBar() {
     return AppBar(
-      title: Text("Predicción"),
+      title: Text(_title),
     );
   }
 
@@ -52,26 +53,50 @@ class PredictionListState extends State<PredictionsList> {
   Widget _tile(snapshot, index) {
     return ListTile(
       title: Text(
-        "Time: " +
-            snapshot.data.consolidated_weather[index].weather_state_name
-                .toString(),
+        snapshot.data.consolidated_weather[index].applicable_date.toString(),
         style: TextStyle(fontWeight: FontWeight.bold),
       ),
-      subtitle: Text("Temperature: " +
-          snapshot.data.consolidated_weather[index].the_temp.toString()),
-      leading: Text(
-          snapshot.data.consolidated_weather[index].applicable_date.toString()),
+      subtitle: Text(
+        snapshot.data.consolidated_weather[index].weather_state_name +
+            ", " +
+            snapshot.data.consolidated_weather[index].the_temp
+                .toStringAsFixed(2) +
+            "ºC",
+      ),
+      leading: Image.network(
+          "https://www.metaweather.com/static/img/weather/png/" +
+              snapshot.data.consolidated_weather[index].weather_state_abbr +
+              ".png"),
+      trailing: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Text(
+            snapshot.data.consolidated_weather[index].max_temp
+                    .toStringAsFixed(2) +
+                "ºC",
+            style: TextStyle(color: Colors.red),
+          ),
+          Text(
+            snapshot.data.consolidated_weather[index].min_temp
+                    .toStringAsFixed(2) +
+                "ºC",
+            style: TextStyle(color: Colors.blue),
+          ),
+        ],
+      ),
     );
   }
 }
 
 class PredictionsList extends StatefulWidget {
-  String myKey;
+  String myKey = "766273";
+  String myTitle = "Predicción";
 
-  PredictionsList(this.myKey);
+  PredictionsList(this.myKey, this.myTitle);
 
   @override
   State<StatefulWidget> createState() {
-    return PredictionListState(myKey);
+    return PredictionListState(myKey, myTitle);
   }
 }

@@ -75,20 +75,24 @@ class SearchState extends State<Search> {
       );
     }
 
+    String _myTitle = snapshot.data.locations[index - 1].title;
+
     return ListTile(
       title: Text(
-        snapshot.data.locations[index - 1].title,
+        _myTitle,
         style: TextStyle(fontWeight: FontWeight.bold),
       ),
       subtitle:
           Text("ID: " + snapshot.data.locations[index - 1].woeid.toString()),
-      onTap: (){
-
+      onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => PredictionsList(snapshot.data.locations[index - 1].woeid.toString())),
+          MaterialPageRoute(
+              builder: (context) => PredictionsList(
+                    snapshot.data.locations[index - 1].woeid.toString(),
+                    _myTitle,
+                  )),
         );
-
       },
     );
   }
